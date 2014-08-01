@@ -1,0 +1,38 @@
+﻿<!--
+*CheckersMobile
+*
+*Copyright (C) 2014 Frédéric Hanna, Diogo Soares, David Desrochers and Étienne Chevalier
+*
+*This file is part of CheckersMobile.
+*
+*CheckersMobile is free software: you can redistribute it and/or modify it under the terms of the
+*GNU General Public License as published by the Free Software Foundation, either version 2 of the
+*License, or (at your option) any later version.
+*
+*CheckersMobile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+*without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*
+*See the GNU General Public License for more details. You should have received a copy of the GNU
+*General Public License along with CheckersMobile. If not, see <http: />/www.gnu.org/licenses/>.
+*
+*Authors: Frédéric Hanna
+*         Diogo Soares
+*         David Desrochers
+*         Étienne Chevalier
+-->
+
+
+@{
+    ViewBag.Title = "About";
+}
+
+<h2>About</h2>
+<p>
+     Put content here.
+</p>
+
+<ul data-role="listview" data-inset="true">
+    <li data-role="list-divider">Navigation</li>
+    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+</ul>

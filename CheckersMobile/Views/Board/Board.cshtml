@@ -1,0 +1,231 @@
+﻿<!--
+*CheckersMobile
+*
+*Copyright (C) 2014 Frédéric Hanna, Diogo Soares, David Desrochers and Étienne Chevalier
+*
+*This file is part of CheckersMobile.
+*
+*CheckersMobile is free software: you can redistribute it and/or modify it under the terms of the
+*GNU General Public License as published by the Free Software Foundation, either version 2 of the
+*License, or (at your option) any later version.
+*
+*CheckersMobile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+*without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*
+*See the GNU General Public License for more details. You should have received a copy of the GNU
+*General Public License along with CheckersMobile. If not, see <http: />/www.gnu.org/licenses/>.
+*
+*Authors: Frédéric Hanna
+*         Diogo Soares
+*         David Desrochers
+*         Étienne Chevalier
+-->
+
+
+@model CheckerManager.GameManager
+
+
+
+<style>
+    .container-case img {
+        max-width: 100%;
+        max-height: 50px;
+    }
+    .container-case.white {
+        background: #ffce9e;
+    }
+    .container-case.black {
+        background: #d18b47;
+    }
+
+    .container-case.selected {
+        background: white !important;
+    }
+    .container-case.error img {
+        visibility:hidden;
+    }
+</style>
+@{
+    
+    int sizeX = ViewBag.boardSizeX;
+    int sizeY = ViewBag.boardSizeY;
+    
+}
+<center>
+    @Html.Partial("_Info")
+    <table id="tbl-board" data-turn="@Model.turnPlayer" data-role="table" data-mode="reflow">
+
+        @{
+            for (int x = 0; x < sizeX; x++)
+            {
+                <tr>
+                    @for (int y = 0; y < sizeY; y++)
+{
+    int id = x * ViewBag.boardSizeX + y;
+    int val = Model.board2D[y, x];
+    string classColor = "black";
+
+    if (Model.getCellColor(id) == 0)
+    {
+        classColor = "white";
+    }
+
+    <td class="container-case @classColor">
+        @if (val == 1)
+{
+    <img id="case-@id" class="case" src="/Content/images/red.png" data-index="@id" data-value="@val" />
+}
+        else if (val == 2)
+        {
+            <img id="case-@id" class="case" src="/Content/images/blue.png" data-index="@id" data-value="@val" />
+        }
+        else
+        {
+            <img id="case-@id" class="case" src="/Content/images/invisible.png" data-index="@id" data-value="@val" />
+        }
+    </td>
+}
+                </tr>
+            }
+
+        }
+    </table>
+
+</center>
+
+
+
+<script>
+
+    $(function () {
+
+        function tick() {
+            var secondes = parseInt($("#lbl-timer").html()) + 1;
+            $("#lbl-timer").html(secondes);
+        }
+
+
+        gameInterval = setInterval(tick, 1000);
+    });
+
+
+    $(".case").click(function () {
+
+        var $me = $(this);
+        var $selected = $(".case.selected");
+
+        if ($selected[0] == null) {
+            // select the piece
+            if ($me.attr("data-value") != 0) {
+                $me.addClass("selected");
+                $me.closest("td").addClass("selected");
+            }
+        } else {
+
+            // move the piece or unselect if same
+            if ($selected[0] == $me[0]) {
+                $selected.removeClass("selected");
+                $selected.closest("td").removeClass("selected");
+            } else if ($me.attr("data-value") != $selected.attr("data-value")) {
+                $.ajax({
+                    url: "/Board/MovePiece",
+                    data: {
+                        squareIndexStart: $selected.attr("data-index"),
+                        squareIndexEnd: $me.attr("data-index")
+                    },
+                    success: function (response, x ,y) {
+                        console.log(response,x,y);
+                        repaint(response.board, response.winner);
+                        /*if (isValid == "True") {
+
+
+                            $me.attr("data-value", $selected.attr("data-value"));
+                            $me.attr("src", $selected.attr("src"));
+
+                            $selected.attr("src","/Content/images/invisible.png");
+
+                            $selected.attr("data-value", 0);
+
+                            var turn = !parseInt($("#tbl-board").attr("data-turn"));
+                            $("#tbl-board").attr("data-turn", turn);
+
+
+                            $("#lbl-turn").html((turn ? "Blue" : "Red"));
+                        } else {
+                            $selected.closest("td").addClass("error").delay(200).queue(function () {
+                                $(this).removeClass("error").dequeue();
+                            });
+                        }
+                        */
+                        $selected.removeClass("selected");
+                        $selected.closest("td").removeClass("selected");
+                    }
+                })
+            }
+        }
+
+
+        ;
+    });
+
+    function select() {
+
+    }
+    function move() {
+
+    }
+
+    // not tested
+    function repaint(model, winner) {
+
+        var sizeX = @ViewBag.boardSizeX;    
+        var sizeY = @ViewBag.boardSizeY;
+
+        var player1 = 0; @ViewBag.PLAYER_1;
+        var player2 = 1; @ViewBag.PLAYER_2;
+
+        for (var id = 0; id < sizeY * sizeX; id++) {
+            //var id = x * sizeX + y;
+            var val = model.board1D[id];
+                
+            //console.log(id, val);
+
+            $("#case-" + id).attr("data-value", val);
+            if (val == 1)
+            {
+                $("#case-" + id).attr("src","Content/images/red.png");
+            }
+            else if (val == 2)
+            {
+                $("#case-" + id).attr("src","Content/images/blue.png");
+            }
+            else if (val == 10)
+            {
+                $("#case-" + id).attr("src","Content/images/redking.png");
+            }
+            else if (val == 20)
+            {
+                $("#case-" + id).attr("src","Content/images/blueking.png");
+            }
+            else
+            {
+                $("#case-" + id).attr("src","Content/images/invisible.png");
+                    
+            }
+
+            //$("#case-" + id).val(val);
+        }
+
+        console.log(winner);
+        if (winner != -1) {
+            // stop timer and display popup
+            window.clearInterval(gameInterval);
+            if (winner == @Model.yourcolor) {
+                $("#winDialog").popup("open");
+                
+            } else {
+                $("#looseDialog").popup("open");
+            }
+        }
+}
+</script>

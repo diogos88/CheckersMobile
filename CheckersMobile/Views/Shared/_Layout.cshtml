@@ -1,0 +1,185 @@
+﻿<!--
+*CheckersMobile
+*
+*Copyright (C) 2014 Frédéric Hanna, Diogo Soares, David Desrochers and Étienne Chevalier
+*
+*This file is part of CheckersMobile.
+*
+*CheckersMobile is free software: you can redistribute it and/or modify it under the terms of the
+*GNU General Public License as published by the Free Software Foundation, either version 2 of the
+*License, or (at your option) any later version.
+*
+*CheckersMobile is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+*without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+*
+*See the GNU General Public License for more details. You should have received a copy of the GNU
+*General Public License along with CheckersMobile. If not, see <http: />/www.gnu.org/licenses/>.
+*
+*Authors: Frédéric Hanna
+*         Diogo Soares
+*         David Desrochers
+*         Étienne Chevalier
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    @Styles.Render("~/Content/mobileCss", "~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <style>
+
+        .ui-controlgroup-label {
+
+            width:100%!important;
+        }
+    </style>
+</head>
+<body>
+    <div data-role="page" data-theme="b">
+        <div data-role="header">
+            @if (IsSectionDefined("Header"))
+            {
+                @RenderSection("Header")
+            }
+            else
+            {
+                <h1>@ViewBag.Title</h1>
+                <br>
+    <a href="#menuDiaslog" data-rel="popup" data-icon="info" data-position-to="window" data-inline="false" data-transition="pop" aria-haspopup="true" aria-owns="aboutDialog" aria-expanded="false" role="button" style="display:none">About</a>
+    <a href="#menuDiasslog" data-rel="popup" data-icon="info" data-position-to="window" data-inline="false" data-transition="pop" aria-haspopup="true" aria-owns="aboutDialog" aria-expanded="false" role="button" style="display:none">About</a>
+
+    <a href="#menuDialog" data-rel="popup" data-icon="star" data-position-to="window" data-inline="false" data-transition="pop" aria-haspopup="true" aria-owns="menuDialog" aria-expanded="false" role="button">New Game</a>
+    <a href="#aboutDialog" data-rel="popup" data-icon="info" data-position-to="window" data-inline="false" data-transition="pop" aria-haspopup="true" aria-owns="aboutDialog" aria-expanded="false" role="button">About</a>
+    <a href="#helpDialog" data-rel="popup" data-icon="gear" data-position-to="window" data-inline="false" data-transition="pop" aria-haspopup="true" aria-owns="helpDialog" aria-expanded="false" role="button">Help</a>
+    <a href="#winDialog" data-rel="popup" data-icon="gear" data-position-to="window" data-inline="false" data-transition="pop" aria-haspopup="true" aria-owns="winDialog" aria-expanded="false" role="button" style="display:none">winDialog</a>
+    <a href="#looseDialog" data-rel="popup" data-icon="gear" data-position-to="window" data-inline="false" data-transition="pop" aria-haspopup="true" aria-owns="looseDialog" aria-expanded="false" role="button" style="display:none">looseDialog</a>
+
+    <div class="ui-popup-container pop ui-popup-hidden ui-popup-truncate" id="helpDialog-popup">
+        <div data-role="popup" id="helpDialog" data-overlay-theme="a" data-theme="a" style="max-width:700px;" class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
+            <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
+                <h1 class="ui-title" role="heading" aria-level="1">Help</h1>
+            </div>
+            <div role="main" class="ui-corner-bottom ui-content ">
+                @Html.Partial("_Help")
+                <a id="help-btn-cancel" href="#" data-role="button" data-rel="back" role="button">Close</a>
+            </div>
+        </div>
+    </div>
+
+     <div class="ui-popup-container pop ui-popup-hidden ui-popup-truncate" id="aboutDialog-popup">
+         <div data-role="popup" id="aboutDialog" data-overlay-theme="a" data-theme="a" style="max-width:700px;" class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
+             <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
+                 <h1 class="ui-title" role="heading" aria-level="1">About this App</h1>
+             </div>
+             <div role="main" class="ui-corner-bottom ui-content ">
+                 @Html.Partial("_About")
+                 <a id="about-btn-cancel" href="#" data-role="button" data-rel="back" role="button">Close</a>
+             </div>
+         </div>
+    </div>
+
+
+    <div class="ui-popup-container pop ui-popup-hidden ui-popup-truncate" id="winDialog-popup">
+        <div data-role="popup" id="winDialog" data-overlay-theme="a" data-theme="a" style="max-width:700px;" class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
+            <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
+                <h1 class="ui-title" role="heading" aria-level="1">You won!</h1>
+            </div>
+            <div role="main" class="ui-corner-bottom ui-content ">
+                Congratulations you won !<br>
+                <!--<a class="winlost-btn-restart" href="#" data-role="button" role="button">Restart</a>-->
+                <a id="win-btn-cancel" href="#" data-role="button" data-rel="back" role="button">Close</a>
+            </div>
+        </div>
+    </div>
+    <div class="ui-popup-container pop ui-popup-hidden ui-popup-truncate" id="looseDialog-popup">
+        <div data-role="popup" id="looseDialog" data-overlay-theme="a" data-theme="a" style="max-width:700px;" class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
+            <div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
+                <h1 class="ui-title" role="heading" aria-level="1">Game over!</h1>
+            </div>
+            <div role="main" class="ui-corner-bottom ui-content ">
+                You lost against this dummy AI !!! <br>
+                <!--<a class="winlost-btn-restart" href="#" data-role="button" role="button">Restart</a>-->
+                <a id="lost-btn-cancel" href="#" data-role="button" data-rel="back" role="button">Close</a>
+            </div>
+        </div>
+    </div>
+
+        <div class="ui-popup-container pop ui-popup-hidden ui-popup-truncate" id="popupDialog-popup"><div data-role="popup" id="menuDialog" data-overlay-theme="a" data-theme="a" style="max-width:700px;" class="ui-corner-all ui-popup ui-body-a ui-overlay-shadow">
+			<div data-role="header" data-theme="a" class="ui-corner-top ui-header ui-bar-a" role="banner">
+				<h1 class="ui-title" role="heading" aria-level="1">Game Menu</h1>
+			</div>
+			<div role="main" class="ui-corner-bottom ui-content ">
+@using (Ajax.BeginForm("StartNewGame", "Board", null, new AjaxOptions
+{
+    OnComplete = "AjaxStartNewGameCompleted"
+}, new { @id = "menu-form" }))
+{
+                <div class="ui-field-contain">
+                    <div class="ui-grid-a">
+                        <div class=" ui-block-a">
+                           <fieldset data-role="controlgroup">
+                                <legend><strong>Choose Your Color</strong></legend>
+                                <label><input type="radio" name="color" value="0" checked /><img src="~/Content/images/red.png" style="max-width:100px;" /></label>
+                                <label><input type="radio" name="color" value="1" id="chk-color-blue" class="custom" /><img src="~/Content/images/blue.png" style="max-width:100px" /></label>
+                            </fieldset>
+                        </div>
+                        <div class="ui-block-b">
+                            <fieldset data-role="controlgroup">
+                                <legend><strong>Choose Board Type</strong></legend>
+                                <label><input type="radio" name="type" value="12" checked /><img src="~/Content/images/board2.png" style="max-width:100px" /></label>
+                                <label><input type="radio" name="type" value="8" /><img src="~/Content/images/board1.png" style="max-width:100px" /></label>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                
+                <input id="menu-btn-start" type="submit" value="Start game!"  />
+    <a id="menu-btn-cancel" href="#" data-role="button" data-rel="back" role="button">Cancel</a>
+}
+
+                
+                   
+                </div>
+		</div></div>
+                
+                
+            }</div>
+        <div data-role="content">
+            @RenderBody()
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    <script>
+
+        var gameInterval;
+        $(document).on("mobileinit", function () {
+            $.mobile.ajaxEnabled = false;
+        });
+
+        function AjaxStartNewGameCompleted(data) {
+            $("#menu-btn-cancel").click();
+            $("#div-board").html(data.responseText);
+            
+        }
+
+        $(function () {
+            $(".winlost-btn-restart").click(function () {
+                console.log("heyy");
+                $("#menuDialog").popup("open");
+            });
+
+        });
+
+    </script>
+
+    @Scripts.Render("~/bundles/jquerymobile")
+    @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/ajax")
+</body>
+</html>
